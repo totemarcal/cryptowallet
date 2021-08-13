@@ -10,5 +10,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#32CD32</color>
     <color name="blue">#483D8B</color>
+    <color name="ok">#1E6200EE</color>
+    <color name="cancel">#CC0000</color>
+
 
 </resources>

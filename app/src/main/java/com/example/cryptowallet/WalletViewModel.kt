@@ -15,21 +15,18 @@ import kotlinx.coroutines.Dispatchers
  */
 class WalletViewModel (private val walletRepository: WalletRepository): ViewModel(), Observable {
 
-    private var mTriggerFetchData = MutableLiveData<Boolean>()
-    private var wallets : LiveData<List<Wallet>> = walletRepository.allWallets
-
     fun getWallets(): LiveData<List<Wallet>>{
-        return wallets
+        return walletRepository.getAll()
+    }
+
+    fun getWalletById(id: String): LiveData<Wallet> {
+        return walletRepository.getWalletById(id)
     }
 
     fun insertWallet(wallet: Wallet){
         viewModelScope.launch(Dispatchers.IO) {
             walletRepository.insertWallet(wallet)
         }
-    }
-
-    fun loadWallet() {
-        mTriggerFetchData.value = true
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

@@ -3,7 +3,6 @@ package com.example.cryptowallet
 import android.content.DialogInterface
 import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import android.view.Menu
@@ -27,33 +26,24 @@ class MainActivity : AppCompatActivity() {
     private val wallets : ArrayList<Wallet> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        try {
-            super.onCreate(savedInstanceState)
-            binding = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            binding.itemRecyclerview.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            adapter = WalletRecyclerViewAdapter(wallets)
-            binding.itemRecyclerview.adapter = adapter
-            val studentDao = WalletDatabase.getInstance(application).getWalletDao()
-            val walletRepository = WalletRepository(studentDao)
-            val mainActivityViewModelFactory = WalletViewModelFactory(walletRepository)
-            /**
-             * get student view model class instance
-             */
-            viewModel = ViewModelProvider(this, mainActivityViewModelFactory).get(WalletViewModel::class.java)
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.itemRecyclerview.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        adapter = WalletRecyclerViewAdapter(wallets)
+        binding.itemRecyclerview.adapter = adapter
+        val walletDao = WalletDatabase.getInstance(application).getWalletDao()
+        val walletRepository = WalletRepository(walletDao)
+        val walletViewModelFactory = WalletViewModelFactory(walletRepository)
+        viewModel = ViewModelProvider(this, walletViewModelFactory).get(WalletViewModel::class.java)
 
-            //setData()
-        }catch (e: Exception) {
-            println("Caught ArithmeticException")
-        }
         viewModel.getWallets().observe(this, Observer<List<Wallet>> {
             wallets.clear()
             wallets.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
 
-        viewModel.loadWallet()
 
         binding.fab.setOnClickListener { view ->
             val dialogBuilder = AlertDialog.Builder(this)

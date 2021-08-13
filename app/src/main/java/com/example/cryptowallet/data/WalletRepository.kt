@@ -1,18 +1,19 @@
 package com.example.cryptowallet.data
 
+import androidx.lifecycle.LiveData
 
-/**
- * Created by muhrahmatullah on 29/09/18.
- */
 class WalletRepository(private val walletDao: WalletDao) {
 
-    val allWallets = walletDao.getAll()
 
     suspend fun insertWallet(wallet: Wallet){
-        try {
             walletDao.insert(wallet)
-        }catch (e: Exception) {
-            println("Caught ArithmeticException")
-        }
+    }
+
+    fun getWalletById(id: String) : LiveData<Wallet>{
+        return walletDao.getById(id)
+    }
+
+    fun getAll() : LiveData<List<Wallet>>{
+        return walletDao.getAll()
     }
 }

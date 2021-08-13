@@ -20,10 +20,9 @@ class WalletRecyclerViewAdapter (private val walletList : List<Wallet>)
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
         holder.bindView(walletList[position])
         holder.cardView.setOnClickListener{ v ->
-            Toast.makeText(v.context, "Screen Details", Toast.LENGTH_LONG).show()
-            //val intent = Intent(v.context, DetailActivity::class.java)
-            //intent.putExtra("student_id", walletList[position].id)
-            //v.context.startActivity(intent)
+            val intent = Intent(v.context, DetailsActivity::class.java)
+            intent.putExtra("wallet_id", walletList[position].id)
+            v.context.startActivity(intent)
         }
     }
 
