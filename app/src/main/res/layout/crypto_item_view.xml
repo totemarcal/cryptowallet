@@ -68,7 +68,7 @@
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/ll_quotation"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="6dp"
@@ -83,7 +83,7 @@
                         android:id="@+id/item_quatation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{wallet.item_quatation}"
+                        android:text="@{wallet.item_quotation}"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="BTC"
@@ -107,7 +107,7 @@
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="24dp"
-                    android:gravity="right | end"
+                    android:gravity="right "
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/ll_quotation"
                     app:layout_constraintEnd_toEndOf="parent"

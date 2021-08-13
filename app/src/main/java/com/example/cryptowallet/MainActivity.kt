@@ -1,18 +1,22 @@
 package com.example.cryptowallet
 
+import android.content.DialogInterface
 import androidx.lifecycle.Observer
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptowallet.data.Wallet
 import com.example.cryptowallet.data.WalletDatabase
 import com.example.cryptowallet.data.WalletRepository
 import com.example.cryptowallet.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.input_dialog.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,21 +55,30 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.loadWallet()
 
-        /*binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
+        binding.fab.setOnClickListener { view ->
+            val dialogBuilder = AlertDialog.Builder(this)
+            val view = layoutInflater.inflate(R.layout.input_dialog, null)
+            dialogBuilder.setView(view)
+            dialogBuilder.setTitle("Buy Coins")
+            val et_cryptocurrency = view.ed_cryptocurrency
+            val et_quantum = view.ed_quantum
+            dialogBuilder.setPositiveButton("Buy") { _: DialogInterface, _: Int ->
+                val item_name = et_cryptocurrency.text
+                val item_qtd_wallet = et_quantum.text
+                //val item_value_wallet : String = item_qtd_wallet * 34756.56
+                val item_value_wallet : String = "$45.675.56"
+                viewModel.insertWallet(
+                    Wallet(item_name.toString(), "$34.756,56", "+1.0968", item_qtd_wallet.toString(), item_value_wallet)
+                )
+                Toast.makeText(this, "Currency added to your wallet.", Toast.LENGTH_SHORT).show()
+
+            }
+            dialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, _: Int ->
+            }
+            dialogBuilder.show()
+        }
     }
 
-    private fun setData(){
-        val item_name = "BTC"
-        val item_quatation = "BTC"
-        val item_variation = "BTC"
-        val item_qtd_wallet = "BTC"
-        val item_value_wallet = "BTC"
-        viewModel.insertWallet(Wallet(item_name,
-            item_quatation, item_variation, item_qtd_wallet, item_value_wallet))
-    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
