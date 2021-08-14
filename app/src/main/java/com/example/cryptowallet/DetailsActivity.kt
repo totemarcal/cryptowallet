@@ -33,12 +33,13 @@ class DetailsActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, walletViewModelFactory).get(WalletViewModel::class.java)
         walletId = intent.getLongExtra("wallet_id", 0).toString()
         viewModel.getWalletById(walletId).observe(this, Observer {
+            wallet = it
             binding.txId.text = it.id.toString()
-            binding.txItemName.text = it.item_name
-            binding.txItemQtdWallet.text = it.item_qtd_wallet
-            binding.txItemQuotation.text = it.item_quotation
-            binding.txItemValueWallet.text = it.item_value_wallet
-            binding.txItemVariation.text = it.item_variation
+            binding.txItemName.text = "Coins: " + it.item_name
+            binding.edAmount.setText(it.item_qtd_wallet)
+            binding.txItemQuotation.text = "Quotation: "+it.item_quotation
+            binding.txItemValueWallet.text = "Value: "+it.item_value_wallet
+            binding.txItemVariation.text = "Variation: "+ it.item_variation
         })
 
         binding.btCancel.setOnClickListener { v ->
@@ -52,6 +53,22 @@ class DetailsActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.fire,
                     DialogInterface.OnClickListener { dialog, id ->
                         viewModel.deleteWallet(binding.txId.text as String)
+                    })
+                .setNegativeButton(R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                    })
+            // Create the AlertDialog object and return it
+            builder.create().show()
+        }
+
+        binding.btUpdate.setOnClickListener { v ->
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(R.string.dialog_fire_update)
+                .setPositiveButton(R.string.fire,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        wallet.item_qtd_wallet = binding.edAmount.text.toString()
+                        viewModel.updateWallet(wallet)
                     })
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->

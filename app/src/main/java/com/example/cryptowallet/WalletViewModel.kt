@@ -29,6 +29,12 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
         }
     }
 
+    fun updateWallet(wallet: Wallet){
+        viewModelScope.launch(Dispatchers.IO) {
+            walletRepository.updateWallet(wallet)
+        }
+    }
+
     fun deleteWallet(walletId: String){
         viewModelScope.launch(Dispatchers.IO) {
             walletRepository.deleteWallet(walletId)

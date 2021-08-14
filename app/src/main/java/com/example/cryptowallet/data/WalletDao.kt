@@ -16,6 +16,9 @@ interface WalletDao {
     @Insert(onConflict = REPLACE)
     fun insert(wallet: Wallet)
 
+    @Update(onConflict = REPLACE)
+    fun update(wallet: Wallet)
+
     @Query("SELECT * FROM wallet WHERE id = :id ")
     fun getById(id: String): LiveData<Wallet>
 
