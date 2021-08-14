@@ -13,4 +13,6 @@
     <string name="quatation_wallet_item_quotation">Quatation: + @{wallet.item_quotation}</string>
     <string name="cancel">Cancel</string>
     <string name="ransom">Ransom</string>
+    <string name="dialog_fire_missiles">Do you confirm the rescue?</string>
+    <string name="fire">Confirm</string>
 </resources>

@@ -9,6 +9,10 @@ class WalletRepository(private val walletDao: WalletDao) {
             walletDao.insert(wallet)
     }
 
+    suspend fun deleteWallet(walletId: String){
+        walletDao.deleteWallet(walletId)
+    }
+
     fun getWalletById(id: String) : LiveData<Wallet>{
         return walletDao.getById(id)
     }

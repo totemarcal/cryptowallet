@@ -45,6 +45,21 @@ class DetailsActivity : AppCompatActivity() {
             val intent = Intent(v.context, MainActivity::class.java)
             v.context.startActivity(intent)
         }
+
+        binding.btRansom.setOnClickListener { v ->
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(R.string.dialog_fire_missiles)
+                .setPositiveButton(R.string.fire,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        viewModel.deleteWallet(binding.txId.text as String)
+                    })
+                .setNegativeButton(R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                    })
+            // Create the AlertDialog object and return it
+            builder.create().show()
+        }
     }
 
 

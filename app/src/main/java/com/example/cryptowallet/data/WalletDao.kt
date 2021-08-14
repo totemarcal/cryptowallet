@@ -19,4 +19,7 @@ interface WalletDao {
     @Query("SELECT * FROM wallet WHERE id = :id ")
     fun getById(id: String): LiveData<Wallet>
 
+    @Query("DELETE FROM wallet WHERE id = :id ")
+    suspend fun deleteWallet(id : String)
+
 }

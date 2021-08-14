@@ -29,6 +29,12 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
         }
     }
 
+    fun deleteWallet(walletId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            walletRepository.deleteWallet(walletId)
+        }
+    }
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
         TODO("Not yet implemented")
     }
