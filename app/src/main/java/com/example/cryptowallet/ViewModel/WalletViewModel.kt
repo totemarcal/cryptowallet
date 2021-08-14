@@ -1,5 +1,8 @@
 package com.example.cryptowallet.ViewModel
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.cryptowallet.data.WalletRepository
 import com.example.cryptowallet.data.Wallet
@@ -8,12 +11,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import androidx.databinding.Observable
+import com.example.cryptowallet.Api.DataWallet
+import com.example.cryptowallet.Api.WalletApiClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import java.lang.Exception
 
 /**
  * Created by muhrahmatullah on 26/09/18.
  */
 class WalletViewModel (private val walletRepository: WalletRepository): ViewModel(), Observable {
+
+    val client by lazy { WalletApiClient.create() }
 
     fun getWallets(): LiveData<List<Wallet>>{
         return walletRepository.getAll()
@@ -24,9 +34,21 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
     }
 
     fun insertWallet(wallet: Wallet){
-        viewModelScope.launch(Dispatchers.IO) {
-            walletRepository.insertWallet(wallet)
-        }
+        try{
+        client.addWallet(DataWallet(wallet.item_name, wallet.item_variation, wallet.item_quotation, wallet.item_qtd_wallet, wallet.item_value_wallet))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                            viewModelScope.launch(Dispatchers.IO) {
+                                walletRepository.insertWallet(wallet)
+                            }
+                       }, { throwable ->
+                            Log.v("ErroApi","Add error: ${throwable.message}")
+                            //Toast.makeText(context, "Add error: ${throwable.message}", Toast.LENGTH_LONG).show()
+                        }
+            )}catch (ex: Exception){
+                Log.v("ErroApi","Add error: ${ex.message}")
+            }
     }
 
     fun updateWallet(wallet: Wallet){
