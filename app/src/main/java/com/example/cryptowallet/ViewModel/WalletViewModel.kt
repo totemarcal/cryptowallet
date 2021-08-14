@@ -1,6 +1,5 @@
 package com.example.cryptowallet.ViewModel
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -23,12 +22,17 @@ import java.lang.Exception
  */
 class WalletViewModel (private val walletRepository: WalletRepository): ViewModel(), Observable {
 
+    private val erroApi = MutableLiveData<Boolean>()
+
     val client by lazy { WalletApiClient.create() }
 
     fun getWallets(): LiveData<List<Wallet>>{
         return walletRepository.getAll()
     }
 
+    fun getErroApi(): MutableLiveData<Boolean>{
+        return  erroApi
+    }
     fun getWalletById(id: String): LiveData<Wallet> {
         return walletRepository.getWalletById(id)
     }
@@ -44,7 +48,9 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
                             }
                        }, { throwable ->
                             Log.v("ErroApi","Add error: ${throwable.message}")
-                            //Toast.makeText(context, "Add error: ${throwable.message}", Toast.LENGTH_LONG).show()
+                            viewModelScope.launch {
+                                erroApi.postValue(true)
+                            }
                         }
             )}catch (ex: Exception){
                 Log.v("ErroApi","Add error: ${ex.message}")

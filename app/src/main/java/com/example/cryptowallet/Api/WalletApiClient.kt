@@ -10,8 +10,10 @@ import retrofit2.http.*
 
 interface WalletApiClient {
 
-
+    @GET("wallet") fun getMovies(): Observable<WalletEmbedded>
     @POST("wallet") fun addWallet(@Body wallet: DataWallet): Completable
+    @DELETE("wallet/{id}") fun deleteMovie(@Path("id") id: Int) : Completable
+    @PUT("wallet/{id}") fun updateMovie(@Path("id")id: Int, @Body wallet: DataWallet) : Completable
 
     companion object {
 

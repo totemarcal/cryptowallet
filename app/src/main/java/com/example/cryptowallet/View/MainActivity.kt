@@ -42,12 +42,21 @@ class MainActivity : AppCompatActivity() {
         val walletViewModelFactory = WalletViewModelFactory(walletRepository)
         viewModel = ViewModelProvider(this, walletViewModelFactory).get(WalletViewModel::class.java)
 
+        viewModel.getErroApi().observe(this, Observer {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(R.string.dialog_error_api)
+                .setPositiveButton(
+                    R.string.fire,
+                    DialogInterface.OnClickListener { dialog, id ->
+                    })
+            // Create the AlertDialog object and return it
+            builder.create().show()
+        })
         viewModel.getWallets().observe(this, Observer<List<Wallet>> {
             wallets.clear()
             wallets.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
-
 
         binding.fab.setOnClickListener { view ->
             val dialogBuilder = AlertDialog.Builder(this)
