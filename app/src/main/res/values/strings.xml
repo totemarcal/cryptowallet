@@ -17,6 +17,8 @@
     <string name="dialog_fire_missiles">Do you confirm the rescue?</string>
     <string name="dialog_fire_update">Do you confirm the update?</string>
     <string name="dialog_error_api">I\'m sorry, connection error!</string>
+    <string name="dialog_error_api_load">I\'m sorry, connection error! \nThe data will be uploaded offline.</string>
+
     <string name="fire">Confirm</string>
     <string name="amount">Amount</string>
 </resources>

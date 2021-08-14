@@ -48,10 +48,27 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton(
                     R.string.fire,
                     DialogInterface.OnClickListener { dialog, id ->
+
                     })
             // Create the AlertDialog object and return it
             builder.create().show()
         })
+        viewModel.getErroApiLoad().observe(this, Observer {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(R.string.dialog_error_api_load)
+                .setPositiveButton(
+                    R.string.fire,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        viewModel.getWalletsOffline().observe(this, Observer<List<Wallet>> {
+                            wallets.clear()
+                            wallets.addAll(it!!)
+                            adapter.notifyDataSetChanged()
+                        })
+                    })
+            // Create the AlertDialog object and return it
+            builder.create().show()
+        })
+        viewModel.loadWallet()
         viewModel.getWallets().observe(this, Observer<List<Wallet>> {
             wallets.clear()
             wallets.addAll(it!!)

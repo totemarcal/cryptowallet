@@ -23,23 +23,57 @@ import java.lang.Exception
 class WalletViewModel (private val walletRepository: WalletRepository): ViewModel(), Observable {
 
     private val erroApi = MutableLiveData<Boolean>()
+    private val erroApiLoad = MutableLiveData<Boolean>()
 
     val client by lazy { WalletApiClient.create() }
 
+    private val wallets = MutableLiveData<List<Wallet>>()
+
     fun getWallets(): LiveData<List<Wallet>>{
+        return wallets
+    }
+
+    fun getWalletsOffline(): LiveData<List<Wallet>>{
         return walletRepository.getAll()
+    }
+
+    fun loadWallet(){
+        try{
+        client.getWallet()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    var list: ArrayList<Wallet> = ArrayList<Wallet>()
+                    for (item in result){
+                        list.add(Wallet(item.coin, item.quotation, item.variation, item.qtd, item.value))
+                    }
+                    wallets.postValue(list)
+                },
+                { throwable ->
+                    Log.v("ErroApi","Add error: ${throwable.message}")
+                    erroApiLoad.postValue(true)
+                }
+            )}catch (ex: Exception){
+                Log.v("ErroApi","Add error: ${ex.message}")
+            }
     }
 
     fun getErroApi(): MutableLiveData<Boolean>{
         return  erroApi
     }
+
+    fun getErroApiLoad(): MutableLiveData<Boolean>{
+        return  erroApiLoad
+    }
+
     fun getWalletById(id: String): LiveData<Wallet> {
         return walletRepository.getWalletById(id)
     }
 
     fun insertWallet(wallet: Wallet){
         try{
-        client.addWallet(DataWallet(wallet.item_name, wallet.item_variation, wallet.item_quotation, wallet.item_qtd_wallet, wallet.item_value_wallet))
+        client.addWallet(DataWallet("", wallet.item_name, wallet.item_variation, wallet.item_quotation, wallet.item_qtd_wallet, wallet.item_value_wallet))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -48,9 +82,7 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
                             }
                        }, { throwable ->
                             Log.v("ErroApi","Add error: ${throwable.message}")
-                            viewModelScope.launch {
-                                erroApi.postValue(true)
-                            }
+                            erroApi.postValue(true)
                         }
             )}catch (ex: Exception){
                 Log.v("ErroApi","Add error: ${ex.message}")
