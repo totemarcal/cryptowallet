@@ -1,4 +1,4 @@
-package com.example.cryptowallet
+package com.example.cryptowallet.View
 
 import android.content.DialogInterface
 import androidx.lifecycle.Observer
@@ -11,6 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptowallet.Adapter.WalletRecyclerViewAdapter
+import com.example.cryptowallet.R
+import com.example.cryptowallet.ViewModel.WalletViewModel
+import com.example.cryptowallet.ViewModel.WalletViewModelFactory
 import com.example.cryptowallet.data.Wallet
 import com.example.cryptowallet.data.WalletDatabase
 import com.example.cryptowallet.data.WalletRepository

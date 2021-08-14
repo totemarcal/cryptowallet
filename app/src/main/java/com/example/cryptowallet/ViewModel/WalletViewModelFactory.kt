@@ -1,4 +1,4 @@
-package com.example.cryptowallet
+package com.example.cryptowallet.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

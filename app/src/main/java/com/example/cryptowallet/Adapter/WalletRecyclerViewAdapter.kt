@@ -1,10 +1,10 @@
-package com.example.cryptowallet
+package com.example.cryptowallet.Adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cryptowallet.View.DetailsActivity
 import com.example.cryptowallet.data.Wallet
 import com.example.cryptowallet.databinding.CryptoItemViewBinding
 
