@@ -19,6 +19,7 @@ import com.example.cryptowallet.data.Wallet
 import com.example.cryptowallet.data.WalletDatabase
 import com.example.cryptowallet.data.WalletRepository
 import com.example.cryptowallet.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_detail.view.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 //val item_value_wallet : String = item_qtd_wallet * 34756.56
                 val item_value_wallet : String = "$45.675.56"
                 viewModel.insertWallet(
-                    Wallet(item_name.toString(), "$34.756,56", "+1.0968", item_qtd_wallet.toString(), item_value_wallet)
+                    Wallet(item_name.toString(), "$34.756,56", "+1.0968", item_qtd_wallet.toString(), item_value_wallet, "")
                 )
                 Toast.makeText(this, "Currency added to your wallet.", Toast.LENGTH_SHORT).show()
 

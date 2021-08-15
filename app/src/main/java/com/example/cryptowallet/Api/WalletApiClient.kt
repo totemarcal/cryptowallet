@@ -11,8 +11,8 @@ import retrofit2.http.*
 interface WalletApiClient {
 
     @GET("wallet") fun getWallet(): Observable<List<DataWallet>>
-    @POST("wallet") fun addWallet(@Body wallet: DataWallet): Completable
-    @DELETE("wallet/{id}") fun deleteWallet(@Path("id") id: Int) : Completable
+    @POST("wallet") fun addWallet(@Body wallet: DataWallet): Observable<DataWallet>
+    @DELETE("wallet/{id}") fun deleteWallet(@Path("id") id: String) : Completable
     @PUT("wallet/{id}") fun updateWallet(@Path("id")id: Int, @Body wallet: DataWallet) : Completable
 
     companion object {
@@ -22,7 +22,7 @@ interface WalletApiClient {
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://5fa103ace21bab0016dfd97e.mockapi.io/api/v/")
+                .baseUrl("https://5fa103ace21bab0016dfd97e.mockapi.io/api/v1/")
                 .build()
             return retrofit.create(WalletApiClient::class.java)
         }

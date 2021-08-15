@@ -46,7 +46,7 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
                 { result ->
                     var list: ArrayList<Wallet> = ArrayList<Wallet>()
                     for (item in result){
-                        list.add(Wallet(item.coin, item.quotation, item.variation, item.qtd, item.value))
+                        list.add(Wallet(item.coin, item.quotation, item.variation, item.qtd, item.value, item.id))
                     }
                     wallets.postValue(list)
                 },
@@ -76,9 +76,11 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
         client.addWallet(DataWallet("", wallet.item_name, wallet.item_variation, wallet.item_quotation, wallet.item_qtd_wallet, wallet.item_value_wallet))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+            .subscribe({ result ->
+                            wallet.id=result.id
                             viewModelScope.launch(Dispatchers.IO) {
                                 walletRepository.insertWallet(wallet)
+                                loadWallet()
                             }
                        }, { throwable ->
                             Log.v("ErroApi","Add error: ${throwable.message}")
@@ -96,9 +98,18 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
     }
 
     fun deleteWallet(walletId: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            walletRepository.deleteWallet(walletId)
-        }
+        client.deleteWallet(walletId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                            viewModelScope.launch(Dispatchers.IO) {
+                                walletRepository.deleteWallet(walletId)
+                                loadWallet()
+                            }
+                       }, { throwable ->
+                            Log.v("ErroApi","Add error: ${throwable.message}")
+                            erroApi.postValue(true)
+                       })
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

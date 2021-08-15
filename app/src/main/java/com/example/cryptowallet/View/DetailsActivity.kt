@@ -32,7 +32,7 @@ class DetailsActivity : AppCompatActivity() {
         val walletRepository = WalletRepository(walletDao)
         val walletViewModelFactory = WalletViewModelFactory(walletRepository)
         viewModel = ViewModelProvider(this, walletViewModelFactory).get(WalletViewModel::class.java)
-        walletId = intent.getLongExtra("wallet_id", 0).toString()
+        walletId = intent.getStringExtra("wallet_id").toString()
         viewModel.getWalletById(walletId).observe(this, Observer {
             wallet = it
             binding.txId.text = it.id.toString()

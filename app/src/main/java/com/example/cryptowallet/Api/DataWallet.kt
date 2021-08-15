@@ -8,12 +8,3 @@ data class DataWallet( val id: String,
                        val quotation: String,
                        val qtd:String,
                        val value: String)
-
-data class WalletList (
-    @SerializedName("wallets" )
-    val wallets: List<DataWallet>
-)
-data class WalletEmbedded (
-    @SerializedName("_embedded" )
-    val list: WalletList
-)
