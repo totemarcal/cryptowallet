@@ -13,7 +13,7 @@ interface WalletApiClient {
     @GET("wallet") fun getWallet(): Observable<List<DataWallet>>
     @POST("wallet") fun addWallet(@Body wallet: DataWallet): Observable<DataWallet>
     @DELETE("wallet/{id}") fun deleteWallet(@Path("id") id: String) : Completable
-    @PUT("wallet/{id}") fun updateWallet(@Path("id")id: Int, @Body wallet: DataWallet) : Completable
+    @PUT("wallet/{id}") fun updateWallet(@Path("id")id: String, @Body wallet: DataWallet) : Completable
 
     companion object {
 

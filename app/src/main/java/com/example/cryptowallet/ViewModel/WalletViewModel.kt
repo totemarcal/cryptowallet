@@ -92,9 +92,19 @@ class WalletViewModel (private val walletRepository: WalletRepository): ViewMode
     }
 
     fun updateWallet(wallet: Wallet){
-        viewModelScope.launch(Dispatchers.IO) {
-            walletRepository.updateWallet(wallet)
-        }
+        client.updateWallet(wallet.id, DataWallet(wallet.id, wallet.item_name, wallet.item_variation, wallet.item_quotation, wallet.item_qtd_wallet, wallet.item_value_wallet))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                viewModelScope.launch(Dispatchers.IO) {
+                    walletRepository.updateWallet(wallet)
+                    loadWallet()
+                }
+            }, { throwable ->
+                Log.v("ErroApi","Add error: ${throwable.message}")
+                erroApi.postValue(true)
+            })
+
     }
 
     fun deleteWallet(walletId: String){
